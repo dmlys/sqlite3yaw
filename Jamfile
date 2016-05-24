@@ -1,0 +1,35 @@
+# This is Library Jamfile for sqlite3yaw lib
+# use it like ${this-porject-folder}//sqlite3yaw
+#
+# Jamroot or site-config/user-config should define /boost and /extlib projects
+# For /boost you can use use-project or boost.use-project, from boost module ;
+#
+# for /extlib $(SOL_ROOT)//extlib-headers reference is used, where:
+# * SOL_ROOT path constant pointing to Jamroot, it should be defined like path-constant SOL_ROOT : . ;
+# * extlib-headers is some alias to headers target from extlib project
+#   for example in Jamroot: alias extlib-headers : ${extlib-folder}//headers/<extlib-wopenssl>on ;
+#
+
+import os ;
+import feature ;
+import testing ;
+
+local usage-requirements = <include>include ;
+local requirements = $(usage-requirements) <link>static ;
+
+project
+	# attributes
+	: usage-requirements $(usage-requirements)
+	: requirements       $(requirements)
+	;
+	
+local ext_src = [ glob src/*.cpp ] ;
+
+# header only library 
+alias headers ;
+alias sqlite3yaw ;
+	  
+lib sqlite3yaw-ext 
+	: headers $(ext_src)
+	  /boost//headers
+	  $(SOL_ROOT)//extlib-headers ;

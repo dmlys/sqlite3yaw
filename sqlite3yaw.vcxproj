@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0345E35B-E79E-4fd5-BC71-23645E004636}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)SolutionRoot.props" Condition="exists('$(SolutionDir)SolutionRoot.props')" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\table_meta.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\sqlite3yaw.hpp" />
+    <ClInclude Include="include\sqlite3yaw\bind.hpp" />
+    <ClInclude Include="include\sqlite3yaw\config.hpp" />
+    <ClInclude Include="include\sqlite3yaw\convert.hpp" />
+    <ClInclude Include="include\sqlite3yaw\convert_boost.hpp" />
+    <ClInclude Include="include\sqlite3yaw\convert_stdord.hpp" />
+    <ClInclude Include="include\sqlite3yaw\exceptions.hpp" />
+    <ClInclude Include="include\sqlite3yaw\fwd.hpp" />
+    <ClInclude Include="include\sqlite3yaw\get_iterator.hpp" />
+    <ClInclude Include="include\sqlite3yaw\handle.hpp" />
+    <ClInclude Include="include\sqlite3yaw\query.hpp" />
+    <ClInclude Include="include\sqlite3yaw\session.hpp" />
+    <ClInclude Include="include\sqlite3yaw\sqlite3inc.h" />
+    <ClInclude Include="include\sqlite3yaw\statement.hpp" />
+    <ClInclude Include="include\sqlite3yaw\to_int.hpp" />
+    <ClInclude Include="include\sqlite3yaw\transcation.hpp" />
+    <ClInclude Include="include\sqlite3yaw_ext.hpp" />
+    <ClInclude Include="include\sqlite3yaw_ext\batch.hpp" />
+    <ClInclude Include="include\sqlite3yaw_ext\record_range.hpp" />
+    <ClInclude Include="include\sqlite3yaw_ext\table_meta.hpp" />
+    <ClInclude Include="include\sqlite3yaw_ext\util.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

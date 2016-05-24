@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="include\sqlite3yaw_ext\table_meta.hpp">
+      <Filter>include\sqlite3yaw_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw\convert.hpp">
+      <Filter>include\sqlite3yaw</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw\convert_boost.hpp">
+      <Filter>include\sqlite3yaw</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw\convert_stdord.hpp">
+      <Filter>include\sqlite3yaw</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw\exceptions.hpp">
+      <Filter>include\sqlite3yaw</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw\fwd.hpp">
+      <Filter>include\sqlite3yaw</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw\get_iterator.hpp">
+      <Filter>include\sqlite3yaw</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw\handle.hpp">
+      <Filter>include\sqlite3yaw</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw\query.hpp">
+      <Filter>include\sqlite3yaw</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw\session.hpp">
+      <Filter>include\sqlite3yaw</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw\sqlite3inc.h">
+      <Filter>include\sqlite3yaw</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw\statement.hpp">
+      <Filter>include\sqlite3yaw</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw\to_int.hpp">
+      <Filter>include\sqlite3yaw</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw\transcation.hpp">
+      <Filter>include\sqlite3yaw</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw\bind.hpp">
+      <Filter>include\sqlite3yaw</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw\config.hpp">
+      <Filter>include\sqlite3yaw</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw_ext\util.hpp">
+      <Filter>include\sqlite3yaw_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw_ext.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw_ext\batch.hpp">
+      <Filter>include\sqlite3yaw_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sqlite3yaw_ext\record_range.hpp">
+      <Filter>include\sqlite3yaw_ext</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{54b74442-fbe2-4905-93e5-2cc61a6058f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\sqlite3yaw">
+      <UniqueIdentifier>{025a865e-4b03-40a4-a213-869d511103c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\sqlite3yaw_ext">
+      <UniqueIdentifier>{550382c7-1395-4668-bf21-5021348ac9d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{c2c0653a-31aa-4c3a-be53-b3e315f3f8dc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\table_meta.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
