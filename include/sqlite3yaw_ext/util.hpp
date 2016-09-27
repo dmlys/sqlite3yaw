@@ -10,7 +10,7 @@
 #include <boost/range/as_literal.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
-#include <ext/append_iterator.hpp>
+#include <ext/iterator/append_iterator.hpp>
 #include <ext/functors.hpp>
 #include <ext/functors/ctpred.hpp>
 #include <ext/range/adaptors.hpp>

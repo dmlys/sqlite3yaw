@@ -58,7 +58,10 @@ namespace sqlite3yaw
 			return ret;
 		}
 
-		explicit operator bool() const SQLITE3YAW_NOEXCEPT { return stmt != nullptr; }
+		explicit operator bool() const SQLITE3YAW_NOEXCEPT 
+		{ 
+			return stmt != nullptr;
+		}
 
 		void assign(sqlite3_stmt * stmt)
 		{

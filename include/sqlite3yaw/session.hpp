@@ -117,7 +117,7 @@ namespace sqlite3yaw
 
 		statement prepare(const char * command)
 		{
-			return prepare(command, -1, nullptr);
+			return prepare(command, static_cast<std::size_t>(-1), nullptr);
 		}
 
 		statement prepare(const std::string & command)
@@ -143,7 +143,7 @@ namespace sqlite3yaw
 
 		int prepare_ex(const char * command, statement & stmt) SQLITE3YAW_NOEXCEPT
 		{
-			return prepare_ex(command, -1, stmt, nullptr);
+			return prepare_ex(command, static_cast<std::size_t>(-1), stmt, nullptr);
 		}
 
 		int prepare_ex(const std::string & command, statement & stmt) SQLITE3YAW_NOEXCEPT
