@@ -11,7 +11,7 @@ namespace sqlite3yaw
 	{
 		struct sqlite_category_impl_t : std::error_category
 		{
-			const char * name() const BOOST_NOEXCEPT override { return "sqlite3_error"; }
+			const char * name() const noexcept override { return "sqlite3_error"; }
 			std::string message(int err) const override
 			{
 				return sqlite3_errstr(err);
@@ -55,7 +55,7 @@ namespace sqlite3yaw
 			}
 		}
 
-		const char * what() const SQLITE3YAW_NOEXCEPT override
+		const char * what() const noexcept override
 		{
 			return whatMsg.c_str();
 		}

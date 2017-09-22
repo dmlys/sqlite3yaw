@@ -31,7 +31,7 @@ namespace sqlite3yaw
 			typedef CharRange result_type;
 
 			template <class CharRange>
-			result_type operator ()(CharRange const & rng) const
+			result_type operator ()(const CharRange & rng) const
 			{
 				auto * first = ext::data(rng);
 				auto * last = first + boost::size(rng);
@@ -61,7 +61,7 @@ namespace sqlite3yaw
 		};
 
 		BOOST_NORETURN inline
-		void ThrowNoPrimaryKey(table_meta const & meta)
+		void ThrowNoPrimaryKey(const table_meta & meta)
 		{
 			std::string err = "table ";
 			err += meta.table_name.c_str();
@@ -76,7 +76,7 @@ namespace sqlite3yaw
 		}
 
 		BOOST_NORETURN inline
-		void ThrowUnknownField(CharRange const & val)
+		void ThrowUnknownField(const CharRange & val)
 		{
 			std::string err = "unknown field found: ";
 			err.append(val.begin(), val.size());
@@ -117,7 +117,7 @@ namespace sqlite3yaw
 		template <class SinglePassIterator>
 		void bind_helper_ll(statement & stmt, SinglePassIterator first, SinglePassIterator last, int keyIdx, std::input_iterator_tag)
 		{
-			for (int idx = 0; first != last; ++first, ++idx)
+			for (int idx = 0; first != last; ++first)
 			{
 				if (idx == keyIdx)
 					bind(stmt, stmt.bind_parameter_count(), *first);
@@ -131,7 +131,7 @@ namespace sqlite3yaw
 	/// record is a range of pair or pair like type. It accessed throw std::get<0>/std::get<1>
 	/// expression std::get<0/1>(*records.begin().begin()) must be valid
 	template <class ForwardRange>
-	void batch_insert(ForwardRange const & records, session & ses, table_meta const & meta)
+	void batch_insert(const ForwardRange & records, session & ses, const table_meta & meta)
 	{
 		using namespace detail;
 		CharRangeVec fields;
@@ -148,11 +148,10 @@ namespace sqlite3yaw
 
 		for (const auto & rec : records)
 		{
-			for (const auto & valPair : rec)
+			for (auto && valPair : rec)
 			{
 				using std::get;
 				auto fname = MakeCharRange(get<0>(valPair));
-				const auto & val = get<1>(valPair);
 
 				auto pos = ext::binary_find(fields.begin(), fields.end(), fname, less)
 				           - fields.begin();
@@ -160,7 +159,7 @@ namespace sqlite3yaw
 				if (pos == fields.size())
 					ThrowUnknownField(fname);
 
-				sqlite3yaw::bind(stmt, static_cast<int>(pos + 1), val);
+				sqlite3yaw::bind(stmt, static_cast<int>(pos + 1), get<1>(std::forward<decltype(valPair)>(valPair)));
 			}
 
 			stmt.step();
@@ -180,7 +179,7 @@ namespace sqlite3yaw
 	///
 	/// IMPL NOTE: each record in records traversed twice(so if you use some transforming iterator, you may be better buffer it)
 	template <class ForwardRange>
-	void batch_upsert(ForwardRange const & records, session & ses, table_meta const & meta)
+	void batch_upsert(const ForwardRange & records, session & ses, const table_meta & meta)
 	{
 		using namespace detail;
 		typedef ext::manual_lru_cache<

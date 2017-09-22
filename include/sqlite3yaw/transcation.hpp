@@ -20,22 +20,22 @@ namespace sqlite3yaw
 
 	public:
 		base_transaction(session & ses_);
-		~base_transaction() SQLITE3YAW_NOEXCEPT;
+		~base_transaction() noexcept;
 
-		base_transaction(base_transaction && tr) SQLITE3YAW_NOEXCEPT;
-		base_transaction & operator =(base_transaction && tr) SQLITE3YAW_NOEXCEPT;
+		base_transaction(base_transaction && tr) noexcept;
+		base_transaction & operator =(base_transaction && tr) noexcept;
 
 		base_transaction(base_transaction const &) = delete;
 		base_transaction & operator =(base_transaction const &) = delete;
 
 	public:
 		void rollback()                             { ses->exec("rollback"); }
-		void nothrow_rollback() SQLITE3YAW_NOEXCEPT { ses->exec_ex("rollback"); }
+		void nothrow_rollback() noexcept { ses->exec_ex("rollback"); }
 		void commit();
 	};
 
 	template <transaction_type type>
-	inline base_transaction<type>::base_transaction(base_transaction && tr) SQLITE3YAW_NOEXCEPT
+	inline base_transaction<type>::base_transaction(base_transaction && tr) noexcept
 		: ses(std::exchange(tr.ses, nullptr)), commited(tr.commited) {}
 
 	template <transaction_type type>
@@ -46,7 +46,7 @@ namespace sqlite3yaw
 	}
 
 	template <transaction_type type>
-	inline base_transaction<type>::~base_transaction() SQLITE3YAW_NOEXCEPT
+	inline base_transaction<type>::~base_transaction() noexcept
 	{
 		if (ses && !commited)
 			nothrow_rollback();

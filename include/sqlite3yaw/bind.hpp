@@ -1,6 +1,7 @@
 #pragma once
 #include <cassert>
 #include <string>
+#include <iterator>
 #include <sqlite3yaw/convert.hpp>
 
 namespace sqlite3yaw
@@ -97,12 +98,16 @@ namespace sqlite3yaw
 		}
 	};
 	
-	class bind_iterator :
-		public std::iterator<
-			std::output_iterator_tag,
-			void, void, void, void
-		>
+	class bind_iterator
 	{
+	public:
+		using iterator_category = std::output_iterator_tag;
+		using value_type = void;
+		using reference = void;
+		using pointer = void;
+		using difference_type = std::ptrdiff_t;
+
+	public:
 		auto_binder b;
 		
 		struct proxy

@@ -183,7 +183,7 @@ namespace sqlite3yaw
 	///   first element is some char range, representing tag
 	///   second element is some char range, representing value
 	template <class ForwardRange>
-	void insert_record(session & ses, table_meta const & meta, ForwardRange const & tagval_range)
+	void insert_record(session & ses, const table_meta & meta, const ForwardRange & tagval_range)
 	{
 		auto command = insert_command(meta.table_name, tagval_range | ext::firsts);
 		auto stmt = ses.prepare(command);
@@ -202,7 +202,7 @@ namespace sqlite3yaw
 	///   first element is some char range, representing tag
 	///   second element is some char range, representing value
 	template <class ForwardRange>
-	void update_record(session & ses, table_meta const & meta, ForwardRange const & tagval_range)
+	void update_record(session & ses, const table_meta & meta, const ForwardRange & tagval_range)
 	{
 		assert(!meta.pk.empty());
 		if (meta.pk.empty())
@@ -228,7 +228,7 @@ namespace sqlite3yaw
 	///if record with this key was not in database - insert_record(ses, meta, tagval_range)
 	///see also inser_record, update_record
 	template <class ForwardRange>
-	void upsert_record(session & ses, table_meta const & meta, ForwardRange const & tagval_range)
+	void upsert_record(session & ses, const table_meta & meta, const ForwardRange & tagval_range)
 	{
 		update_record(ses, meta, tagval_range);
 		if (!ses.changes())

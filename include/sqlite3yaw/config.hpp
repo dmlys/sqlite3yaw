@@ -1,8 +1,4 @@
 #pragma once
-#include <boost/config.hpp>
-
-//this file contains library compilation configuration, macros, etc
-#define SQLITE3YAW_NOEXCEPT BOOST_NOEXCEPT
 
 /**
 	define one of follows, default SQLITE3YAW_TO_INT_USE_NOTHING

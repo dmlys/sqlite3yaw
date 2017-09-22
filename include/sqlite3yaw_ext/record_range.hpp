@@ -25,11 +25,11 @@ namespace sqlite3yaw
 	private:
 		UnaryFunctor uf;
 		sqlite3yaw::statement * stmt;
-		bool avail = true;
+		mutable bool avail = true;
 
 	public:
-		const_reference front() { return uf(*stmt); }
-		void pop_front() { avail = stmt->step(); }
+		const_reference front() const { return uf(*stmt); }
+		void pop_front() const { avail = stmt->step(); }
 		bool empty() const { return !avail; }
 
 		record_range(sqlite3yaw::statement & stmt, UnaryFunctor uf = {})

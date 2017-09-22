@@ -16,7 +16,7 @@ namespace sqlite3yaw
 		//functor that can close sqlite3 handles. For unique_ptr
 		struct AutoClose
 		{
-			void operator ()(sqlite3 * db) const SQLITE3YAW_NOEXCEPT
+			void operator ()(sqlite3 * db) const noexcept
 			{
 				//sqlite3_close for null is no-op
 				int res = sqlite3_close(db);
@@ -39,15 +39,13 @@ namespace sqlite3yaw
 		session(session && r) = default;
 		session & operator =(session && r) = default;
 
-		friend void swap(session & s1, session & s2) SQLITE3YAW_NOEXCEPT
+		friend void swap(session & s1, session & s2) noexcept
 		{
 			std::swap(s1.db, s2.db);
 		}
 
-		session(sqlite3 * db_) SQLITE3YAW_NOEXCEPT
-			: db(db_) {}
-		session() SQLITE3YAW_NOEXCEPT
-			: db(nullptr) {}
+		session(sqlite3 * db_) noexcept : db(db_) {}
+		session() noexcept : db(nullptr) {}
 
 		session(const char * initString)        { open(initString); }
 		session(const std::string & initString) { open(initString); }
@@ -55,9 +53,9 @@ namespace sqlite3yaw
 		session(const char * initString, int flags, const char * vfs = nullptr)        { open(initString, flags, vfs); }
 		session(const std::string & initString, int flags, const char * vfs = nullptr) { open(initString, flags, vfs); }
 
-		sqlite3 * native() const SQLITE3YAW_NOEXCEPT { return db.get() ; }
-		sqlite3 * release() SQLITE3YAW_NOEXCEPT { return db.release(); }
-		/*explicit*/ operator bool() const SQLITE3YAW_NOEXCEPT { return (bool)db; }
+		sqlite3 * native() const noexcept { return db.get() ; }
+		sqlite3 * release() noexcept { return db.release(); }
+		/*explicit*/ operator bool() const noexcept { return (bool)db; }
 
 		void assign(sqlite3 * db)
 		{
@@ -133,7 +131,7 @@ namespace sqlite3yaw
 			return stmt;
 		}
 
-		int prepare_ex(const char * commands, std::size_t size, statement & stmt, const char ** tail = nullptr) SQLITE3YAW_NOEXCEPT
+		int prepare_ex(const char * commands, std::size_t size, statement & stmt, const char ** tail = nullptr) noexcept
 		{
 			sqlite3_stmt * pstmt = nullptr;
 			int res = sqlite3_prepare_v2(db.get(), commands, ToInt(size), &pstmt, tail);
@@ -141,12 +139,12 @@ namespace sqlite3yaw
 			return res;
 		}
 
-		int prepare_ex(const char * command, statement & stmt) SQLITE3YAW_NOEXCEPT
+		int prepare_ex(const char * command, statement & stmt) noexcept
 		{
 			return prepare_ex(command, static_cast<std::size_t>(-1), stmt, nullptr);
 		}
 
-		int prepare_ex(const std::string & command, statement & stmt) SQLITE3YAW_NOEXCEPT
+		int prepare_ex(const std::string & command, statement & stmt) noexcept
 		{
 			return prepare_ex(command.c_str(), command.size(), stmt, nullptr);
 		}
@@ -162,12 +160,12 @@ namespace sqlite3yaw
 			check_result(res);
 		}
 
-		int exec_ex(const std::string & commands) SQLITE3YAW_NOEXCEPT
+		int exec_ex(const std::string & commands) noexcept
 		{
 			return exec_ex(commands.c_str());
 		}
 		
-		int exec_ex(const char * commands) SQLITE3YAW_NOEXCEPT
+		int exec_ex(const char * commands) noexcept
 		{
 			return sqlite3_exec(db.get(), commands, nullptr, nullptr, nullptr);
 		}

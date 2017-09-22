@@ -20,15 +20,11 @@ namespace sqlite3yaw
 		statement(const statement &) = delete;
 		statement & operator =(const statement &) = delete;
 
-		statement() SQLITE3YAW_NOEXCEPT
-			: stmt(nullptr) {};
-		///see assign
-		statement(sqlite3_stmt * stmt_) SQLITE3YAW_NOEXCEPT
-			: stmt(stmt_) {};
-		statement(statement && r) SQLITE3YAW_NOEXCEPT
-			: stmt(r.release()) {}
+		statement() noexcept : stmt(nullptr) {};
+		statement(sqlite3_stmt * stmt_) noexcept : stmt(stmt_) {};
+		statement(statement && r) noexcept : stmt(r.release()) {}
 
-		statement & operator =(statement && r) SQLITE3YAW_NOEXCEPT
+		statement & operator =(statement && r) noexcept
 		{
 			if (this != &r)
 			{
@@ -39,26 +35,26 @@ namespace sqlite3yaw
 			return *this;
 		}
 
-		friend void swap(statement & s1, statement & s2) SQLITE3YAW_NOEXCEPT
+		friend void swap(statement & s1, statement & s2) noexcept
 		{
 			std::swap(s1.stmt, s2.stmt);
 		}
 
-		~statement() SQLITE3YAW_NOEXCEPT
+		~statement() noexcept
 		{
 			if (stmt)
 				sqlite3_finalize(stmt); //nothrow
 		}
 
-		sqlite3_stmt * native() const SQLITE3YAW_NOEXCEPT { return stmt; }
-		sqlite3_stmt * release() SQLITE3YAW_NOEXCEPT
+		sqlite3_stmt * native() const noexcept { return stmt; }
+		sqlite3_stmt * release() noexcept
 		{
 			sqlite3_stmt * ret = stmt;
 			stmt = nullptr;
 			return ret;
 		}
 
-		explicit operator bool() const SQLITE3YAW_NOEXCEPT 
+		explicit operator bool() const noexcept 
 		{ 
 			return stmt != nullptr;
 		}
@@ -71,7 +67,7 @@ namespace sqlite3yaw
 
 		/// sqlite3_finilize returns most recent error code if any
 		/// pass it to user, it's not a error
-		int finalize() SQLITE3YAW_NOEXCEPT
+		int finalize() noexcept
 		{
 			int res = SQLITE_OK;
 			if (stmt) {
@@ -120,7 +116,7 @@ namespace sqlite3yaw
 		
 		/// sqlite3_reset returns most recent error code if any
 		/// pass it to user, it's not a error
-		int reset() SQLITE3YAW_NOEXCEPT {return sqlite3_reset(stmt);}
+		int reset() noexcept {return sqlite3_reset(stmt);}
 		void clear_bindings()           { check_result( sqlite3_clear_bindings(stmt) ); }
 
 		/// executes step
