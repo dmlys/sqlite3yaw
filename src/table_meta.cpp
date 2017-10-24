@@ -13,7 +13,7 @@ namespace sqlite3yaw
 		meta.pk.clear();
 
 		std::string cmd = "PRAGMA table_info(";
-		sqlite3yaw::copy_sql_name(meta.table_name, std::back_inserter(cmd));
+		sqlite3yaw::escape_sql_name(meta.table_name, std::back_inserter(cmd));
 		cmd += ")";
 		
 		auto stmt = ses.prepare(cmd);

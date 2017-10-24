@@ -10,10 +10,12 @@
 #include <boost/range/as_literal.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
+#include <ext/type_traits.hpp>        // for is_iterator
+#include <ext/range/range_traits.hpp> // for is_range
 #include <ext/iterator/append_iterator.hpp>
-#include <ext/functors.hpp>
-#include <ext/functors/ctpred.hpp>
-#include <ext/range/adaptors.hpp>
+//#include <ext/functors.hpp>
+//#include <ext/functors/ctpred.hpp>
+//#include <ext/range/adaptors.hpp>
 
 #include <sqlite3yaw.hpp>
 #include <sqlite3yaw_ext/table_meta.hpp>
@@ -23,7 +25,8 @@ namespace sqlite3yaw
 	/// copies name from range to out as '"' + range + '"', any '"' from range is doubled
 	/// effectively escapes sql identifier
 	template <class SinglePassRange, class OutIterator>
-	OutIterator copy_sql_name(const SinglePassRange & sql_name, OutIterator out)
+	auto escape_sql_name(const SinglePassRange & sql_name, OutIterator out)
+		-> std::enable_if_t<ext::is_iterator<OutIterator>::value, OutIterator>
 	{
 		*out = '"'; ++out;
 		out = boost::algorithm::replace_all_copy(out, sql_name, "\"", "\"\""); //" -> ""
@@ -31,8 +34,29 @@ namespace sqlite3yaw
 		return out;
 	}
 
+	/// copies name from range to out as '"' + range + '"', any '"' from range is doubled
+	/// effectively escapes sql identifier
+	template <class SinglePassRange, class OutContainer>
+	inline auto escape_sql_name(const SinglePassRange & sql_name, OutContainer & out)
+		-> std::enable_if_t<ext::is_range<OutContainer>::value>
+	{
+		escape_sql_name(sql_name, std::back_inserter(out));
+	}
+
+	/// copies name from range to out as '"' + range + '"', any '"' from range is doubled
+	/// effectively escapes sql identifier
+	template <class Range>
+	Range escape_sql_name(const Range & sql_name)
+	{
+		Range ret;
+		escape_sql_name(sql_name, ret);
+		return ret;
+	}
+
+
 	template <class SinglePassRange, class Separator, class OutIterator>
-	OutIterator join_sql_names(const SinglePassRange & sql_names, const Separator & sep, OutIterator out)
+	auto join_sql_names(const SinglePassRange & sql_names, const Separator & sep, OutIterator out)
+		-> std::enable_if_t<ext::is_iterator<OutIterator>::value, OutIterator>
 	{
 		auto beg = boost::begin(sql_names);
 		auto end = boost::end(sql_names);
@@ -40,27 +64,46 @@ namespace sqlite3yaw
 		if (beg == end)
 			return out;
 
-		out = copy_sql_name(boost::as_literal(*beg), out);
+		out = escape_sql_name(boost::as_literal(*beg), out);
 
 		auto sepr = boost::as_literal(sep);
 		for (auto it = ++beg; it != end; ++it)
 		{
 			out = boost::copy(sepr, out);
-			out = copy_sql_name(boost::as_literal(*it), out);
+			out = escape_sql_name(boost::as_literal(*it), out);
 		}
 
 		return out;
 	}
 
-	/// copies name from range to out as '"' + range + '"', any '"' from range is doubled
-	/// effectively escapes sql identifier
-	template <class Range>
-	Range copy_sql_name(const Range & sql_name)
+	template <class SinglePassRange, class Separator, class OutContainer>
+	auto join_sql_names(const SinglePassRange & sql_names, const Separator & sep, OutContainer & out)
+		-> std::enable_if_t<ext::is_range<OutContainer>::value, void>
 	{
-		Range ret;
-		copy_sql_name(sql_name, std::back_inserter(ret));
+		auto beg = boost::begin(sql_names);
+		auto end = boost::end(sql_names);
+
+		if (beg == end)
+			return;
+
+		escape_sql_name(boost::as_literal(*beg), out);
+
+		auto sepr = boost::as_literal(sep);
+		for (auto it = ++beg; it != end; ++it)
+		{
+			boost::push_back(out, sepr);
+			escape_sql_name(boost::as_literal(*it), out);
+		}
+	}
+
+	template <class SinglePassRange, class Separator>
+	std::string join_sql_names(const SinglePassRange & sql_names, const Separator & sep)
+	{
+		std::string ret;
+		join_sql_names(sql_names, sep, ret);
 		return ret;
 	}
+
 
 	/// creates update command, with binding places
 	/// <update_word> <table> set <colName> = ? ...
@@ -76,12 +119,12 @@ namespace sqlite3yaw
 
 		boost::push_back(command, boost::as_literal(update_word));
 		command += ' ';
-		copy_sql_name(boost::as_literal(table_name), bi);
+		escape_sql_name(boost::as_literal(table_name), bi);
 		command += " set ";
 
 		for (const auto & col : col_names)
 		{
-			copy_sql_name(boost::as_literal(col), bi);
+			escape_sql_name(boost::as_literal(col), bi);
 			command += " = ?,";
 		}
 		command.pop_back(); //delete extra comma
@@ -100,7 +143,7 @@ namespace sqlite3yaw
 		auto command = custom_update_command(update_word, table_name, col_names);
 		auto pkr = boost::as_literal(pk);
 		command += " where ";
-		copy_sql_name(pkr, std::back_inserter(command));
+		escape_sql_name(pkr, std::back_inserter(command));
 		command += " = ?";
 
 		return command;
@@ -138,13 +181,13 @@ namespace sqlite3yaw
 
 		boost::push_back(command, boost::as_literal(insert_word));
 		command += " into ";
-		copy_sql_name(boost::as_literal(table_name), bi);
+		escape_sql_name(boost::as_literal(table_name), bi);
 		command += " ( ";
 
 		std::size_t count = 0;
 		for (const auto & col : col_names)
 		{
-			copy_sql_name(boost::as_literal(col), bi);
+			escape_sql_name(boost::as_literal(col), bi);
 			command.push_back(',');
 			++count;
 		}
@@ -173,7 +216,7 @@ namespace sqlite3yaw
 		command += "select ";
 		join_sql_names(col_names, ", ", std::back_inserter(command));
 		command += " from ";
-		copy_sql_name(boost::as_literal(table_name), std::back_inserter(command));
+		escape_sql_name(boost::as_literal(table_name), std::back_inserter(command));
 		return command;
 	}
 
