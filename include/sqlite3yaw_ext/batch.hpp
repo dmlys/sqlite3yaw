@@ -95,16 +95,6 @@ namespace sqlite3yaw
 			{ swap(ci1.stmt, ci2.stmt); std::swap(ci1.pkPos, ci2.pkPos); }
 		};
 
-		/// helper function
-		/// it binds values from range to a statement like
-		/// "update test set f1 = ? ... set kf = ? ... where kf = ?"
-		template <class Range>
-		void bind_helper(statement & stmt, const Range & rng, int keyIdx)
-		{
-			typedef typename boost::range_iterator<Range>::type iterator;
-			typedef typename boost::iterator_category<iterator>::type category;
-			bind_helper_ll(stmt, boost::begin(rng), boost::end(rng), keyIdx, category());
-		}
 
 		template <class RandomAccessIterator>
 		void bind_helper_ll(statement & stmt, RandomAccessIterator first, RandomAccessIterator last, int keyIdx, std::random_access_iterator_tag)
@@ -125,6 +115,16 @@ namespace sqlite3yaw
 			}
 		}
 
+		/// helper function
+		/// it binds values from range to a statement like
+		/// "update test set f1 = ? ... set kf = ? ... where kf = ?"
+		template <class Range>
+		void bind_helper(statement & stmt, const Range & rng, int keyIdx)
+		{
+			typedef typename boost::range_iterator<Range>::type iterator;
+			typedef typename boost::iterator_category<iterator>::type category;
+			bind_helper_ll(stmt, boost::begin(rng), boost::end(rng), keyIdx, category());
+		}
 	}
 	
 	/// inserts records into table described by meta in one transaction

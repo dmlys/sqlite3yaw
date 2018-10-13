@@ -12,10 +12,11 @@
 
 #include <ext/type_traits.hpp>        // for is_iterator
 #include <ext/range/range_traits.hpp> // for is_range
+#include <ext/range/adaptors/getted.hpp>
+
+#include <ext/functors.hpp>
+#include <ext/functors/ctpred.hpp>
 #include <ext/iterator/append_iterator.hpp>
-//#include <ext/functors.hpp>
-//#include <ext/functors/ctpred.hpp>
-//#include <ext/range/adaptors.hpp>
 
 #include <sqlite3yaw.hpp>
 #include <sqlite3yaw_ext/table_meta.hpp>
