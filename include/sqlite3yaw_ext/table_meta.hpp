@@ -28,7 +28,7 @@ namespace sqlite3yaw
 	void load_table_fields(session & ses, table_meta & meta);
 	///loads information about table by table_name
 	///table must exists, otherwise sqlite3yaw::sqlite_error will be thrown
-	table_meta load_table_meta(session & ses, std::string const & table_name);
+	table_meta load_table_meta(session & ses, const std::string & table_name);
 	///loads list of table metadata from session
 	std::vector<table_meta> load_session_meta(session & ses);
 }

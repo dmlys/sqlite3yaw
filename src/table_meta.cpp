@@ -33,7 +33,7 @@ namespace sqlite3yaw
 		stmt.finalize();
 	}
 
-	table_meta load_table_meta(session & ses, std::string const & table_name)
+	table_meta load_table_meta(session & ses, const std::string & table_name)
 	{
 		table_meta meta;
 		meta.table_name = table_name;
