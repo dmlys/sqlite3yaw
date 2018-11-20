@@ -2,7 +2,7 @@
 #include <sqlite3yaw/statement.hpp>
 #include <sqlite3yaw/session.hpp>
 #include <sqlite3yaw/handle.hpp>
-#include <sqlite3yaw/transcation.hpp>
+#include <sqlite3yaw/transaction.hpp>
 
 #include <sqlite3yaw/convert.hpp>
 #include <sqlite3yaw/bind.hpp>

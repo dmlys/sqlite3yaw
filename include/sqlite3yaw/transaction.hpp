@@ -13,13 +13,23 @@ namespace sqlite3yaw
 	template <transaction_type type>
 	class base_transaction
 	{
-		session * ses;
+		sqlite3yaw::session * ses;
 		bool commited;
 
+	private:
 		void begin();
 
 	public:
-		base_transaction(session & ses_);
+		      auto & session()       noexcept { return *ses; }
+		const auto & session() const noexcept { return *ses; }
+
+	public:
+		void rollback()                  { ses->exec("rollback"); }
+		void nothrow_rollback() noexcept { ses->exec_ex("rollback"); }
+		void commit();
+
+	public:
+		base_transaction(sqlite3yaw::session & ses_);
 		~base_transaction() noexcept;
 
 		base_transaction(base_transaction && tr) noexcept;
@@ -27,11 +37,6 @@ namespace sqlite3yaw
 
 		base_transaction(base_transaction const &) = delete;
 		base_transaction & operator =(base_transaction const &) = delete;
-
-	public:
-		void rollback()                             { ses->exec("rollback"); }
-		void nothrow_rollback() noexcept { ses->exec_ex("rollback"); }
-		void commit();
 	};
 
 	template <transaction_type type>
@@ -39,7 +44,7 @@ namespace sqlite3yaw
 		: ses(std::exchange(tr.ses, nullptr)), commited(tr.commited) {}
 
 	template <transaction_type type>
-	inline base_transaction<type>::base_transaction(session & ses_)
+	inline base_transaction<type>::base_transaction(sqlite3yaw::session & ses_)
 		: ses(&ses_), commited(false)
 	{
 		begin();
