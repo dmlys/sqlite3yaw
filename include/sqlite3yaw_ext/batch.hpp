@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <stdexcept>
 #include <string>
@@ -127,8 +127,8 @@ namespace sqlite3yaw
 		}
 	}
 	
-	/// inserts records into table described by meta in one transaction
-	/// record is a range of pair or pair like type. It accessed throw std::get<0>/std::get<1>
+	/// inserts records into table described by meta.
+	/// record is a range of pair or pair like type. It accessed throw std::get<0>/std::get<1>,
 	/// expression std::get<0/1>(*records.begin().begin()) must be valid
 	template <class ForwardRange>
 	void batch_insert(const ForwardRange & records, session & ses, const table_meta & meta)
@@ -142,8 +142,6 @@ namespace sqlite3yaw
 		ext::ctpred::less<metastr_traits> less;
 		boost::sort(fields, less);
 		auto cmd = insert_command(meta.table_name, fields);
-
-		transaction tr(ses);
 		auto stmt = ses.prepare(cmd);
 
 		for (const auto & rec : records)
@@ -168,11 +166,10 @@ namespace sqlite3yaw
 		}
 
 		stmt.finalize();
-		tr.commit();
 	}
 
-	/// upserts records into table described by meta in one transaction
-	/// record is a range of pair or pair like type. It accessed throw std::get<0>/std::get<1>
+	/// upserts records into table described by meta
+	/// record is a range of pair or pair like type. It accessed throw std::get<0>/std::get<1>,
 	/// expression std::get<0/1>(*records.begin().begin()) must be valid
 	/// 
 	/// upsert means try update, if no such record - insert
@@ -196,7 +193,6 @@ namespace sqlite3yaw
 		CharRangeVec curFieldNames;
 		curFieldNames.reserve(meta.fields.size());
 
-		transaction tr(ses);
 		cache_type cache(500);
 
 		for (const auto & rec : records)
@@ -234,6 +230,5 @@ namespace sqlite3yaw
 		}
 
 		cache.clear();
-		tr.commit();
 	}
 }

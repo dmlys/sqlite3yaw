@@ -1,4 +1,4 @@
-import qbs
+﻿import qbs
 import qbs.Environment
 
 
@@ -25,6 +25,7 @@ StaticLibrary
 
 	files: [
 		"include/sqlite3yaw/**",
+		"include/sqlite3yaw_ext/**",
 		"src/**",
 	]
 }

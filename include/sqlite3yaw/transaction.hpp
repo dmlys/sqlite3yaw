@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <utility>
 #include <sqlite3yaw/session.hpp>
 #include <sqlite3yaw/exceptions.hpp>
