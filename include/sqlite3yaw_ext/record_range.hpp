@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <type_traits> //for std::result_of
 #include <sqlite3yaw/statement.hpp>
 #include <ext/range/input_range_facade.hpp>
@@ -9,14 +9,14 @@ namespace sqlite3yaw
 	class record_range :
 		public ext::input_range_facade <
 			record_range<UnaryFunctor>,
-			typename boost::result_of<UnaryFunctor(sqlite3yaw::statement &)>::type,
-			typename boost::result_of<UnaryFunctor(sqlite3yaw::statement &)>::type
+			typename std::result_of<UnaryFunctor(sqlite3yaw::statement &)>::type,
+			typename std::result_of<UnaryFunctor(sqlite3yaw::statement &)>::type
 		>
 	{
 		typedef ext::input_range_facade <
 			record_range<UnaryFunctor>,
-			typename boost::result_of<UnaryFunctor(sqlite3yaw::statement &)>::type,
-			typename boost::result_of<UnaryFunctor(sqlite3yaw::statement &)>::type
+			typename std::result_of<UnaryFunctor(sqlite3yaw::statement &)>::type,
+			typename std::result_of<UnaryFunctor(sqlite3yaw::statement &)>::type
 		> base_type;
 
 	public:
